@@ -5,7 +5,7 @@ $UserAccount = Get-LocalUser -Name 'Administrator'
 $UserAccount | Set-LocalUser -Password $passw
 
 # Set DNS to domain controller
-Set-DNSClientServerAddress –InterfaceIndex (Get-NetAdapter).InterfaceIndex –ServerAddresses "10.10.10.10"
+Set-DNSClientServerAddress -InterfaceIndex (Get-NetAdapter).InterfaceIndex -ServerAddresses "10.10.10.10"
 
 # Reboot
 Restart-Computer -Force
