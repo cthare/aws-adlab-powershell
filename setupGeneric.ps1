@@ -10,14 +10,14 @@ $taskAction = New-ScheduledTaskAction `
     -Argument '-File C:\temp\postSetupGeneric.ps1'
 $taskTrigger = New-ScheduledTaskTrigger -Once -At (get-date).addMinutes(20)
 $taskName = 'Join to Domain'
-$description = 'Join to Domain'
+$description = 'Sets DNS and joins to domain'
 Register-ScheduledTask `
     -TaskName $taskName `
     -Action $taskAction `
     -Trigger $taskTrigger `
     -Description $description
 $taskPrincipal = New-ScheduledTaskPrincipal -UserId 'Administrator' -RunLevel Highest
-Set-ScheduledTask -TaskName 'Setup AD' -User $taskPrincipal.UserID -Password 'changeMe99!'
+Set-ScheduledTask -TaskName 'Join to Domain' -User $taskPrincipal.UserID -Password 'changeMe99!'
 
 # Reboot
 Restart-Computer -Force
