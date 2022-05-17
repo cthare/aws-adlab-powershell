@@ -1,5 +1,5 @@
 # Domain Setup
-$passw = convertto-securestring 'changeMe99!' -asplaintext -force
+$passw = Get-SECSecretValue -SecretId ad-winlab -Select SecretString | ConvertFrom-Json | Select -ExpandProperty password
 
 try {
 Install-ADDSForest -CreateDnsDelegation:$false `
@@ -12,7 +12,7 @@ Install-ADDSForest -CreateDnsDelegation:$false `
     -LogPath 'C:\Windows\NTDS' `
     -NoRebootOnCompletion:$false `
     -SysvolPath 'C:\Windows\SYSVOL' `
-    -SafeModeAdministratorPassword $passw -Force:$true
+    -SafeModeAdministratorPassword (convertto-securestring $passw -asplaintext -force) -Force:$true
 }
 catch {
     'Failed' | Out-File -FilePath C:\temp\domainLog.txt

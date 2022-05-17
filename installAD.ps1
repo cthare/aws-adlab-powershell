@@ -1,8 +1,8 @@
 # Rename PC and set admin password
 Rename-Computer -NewName 'adlab-dc01'
-$passw = convertto-securestring 'changeMe99!' -asplaintext -force
+$passw = Get-SECSecretValue -SecretId ad-winlab -Select SecretString | ConvertFrom-Json | Select -ExpandProperty password
 $UserAccount = Get-LocalUser -Name 'Administrator'
-$UserAccount | Set-LocalUser -Password $passw
+$UserAccount | Set-LocalUser -Password (convertto-securestring $passw -asplaintext -force)
 
 
 # Install AD feature + management tools
@@ -23,7 +23,7 @@ Register-ScheduledTask `
     -Trigger $taskTrigger `
     -Description $description
 $taskPrincipal = New-ScheduledTaskPrincipal -UserId 'Administrator' -RunLevel Highest
-Set-ScheduledTask -TaskName 'Setup AD' -User $taskPrincipal.UserID -Password 'changeMe99!'
+Set-ScheduledTask -TaskName 'Setup AD' -User $taskPrincipal.UserID -Password $passw
 
 
 # Enable scheduled task logging
