@@ -1,5 +1,5 @@
 # Rename PC and set admin password
-Rename-Computer -NewName 'jenkins_windows'
+Rename-Computer -NewName 'jenkins-windows'
 $passw = Get-SECSecretValue -SecretId ad-winlab -Select SecretString | ConvertFrom-Json | Select -ExpandProperty password
 $UserAccount = Get-LocalUser -Name 'Administrator'
 $UserAccount | Set-LocalUser -Password (convertto-securestring $passw -asplaintext -force)
