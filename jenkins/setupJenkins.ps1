@@ -1,5 +1,5 @@
 # Rename PC and set admin password
-Rename-Computer -NewName 'gen01'
+Rename-Computer -NewName 'jenkins-windows'
 $passw = Get-SECSecretValue -SecretId ad-winlab -Select SecretString | ConvertFrom-Json | Select -ExpandProperty password
 $UserAccount = Get-LocalUser -Name 'Administrator'
 $UserAccount | Set-LocalUser -Password (convertto-securestring $passw -asplaintext -force)
@@ -7,7 +7,7 @@ $UserAccount | Set-LocalUser -Password (convertto-securestring $passw -asplainte
 # Setup post reboot task to setup AD
 $taskAction = New-ScheduledTaskAction `
     -Execute 'powershell.exe' `
-    -Argument '-File C:\temp\postSetupGeneric.ps1'
+    -Argument '-File C:\temp\jenkins\postSetupJenkins.ps1'
 $taskTrigger = New-ScheduledTaskTrigger -Once -At (get-date).addMinutes(20)
 $taskName = 'Join to Domain'
 $description = 'Sets DNS and joins to domain'

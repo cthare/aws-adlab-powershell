@@ -13,7 +13,7 @@ Install-WindowsFeature RSAT-Role-Tools
 # Setup post reboot task to setup AD
 $taskAction = New-ScheduledTaskAction `
     -Execute 'powershell.exe' `
-    -Argument '-File C:\temp\setupAD.ps1'
+    -Argument '-File C:\temp\general\setupAD.ps1'
 $taskTrigger = New-ScheduledTaskTrigger -Once -At (get-date).addMinutes(10)
 $taskName = 'Setup AD'
 $description = 'Configured AD Domain'
